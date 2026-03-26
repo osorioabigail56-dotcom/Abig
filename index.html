@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Para Leo ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: #f5e6c8;
+    background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Georgia', serif;
+    overflow: hidden;
+}
+
+.envelope {
+    width: 300px;
+    height: 200px;
+    background: #d8a47f;
+    position: relative;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.flap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #c08457;
+    clip-path: polygon(0 0, 100% 0, 50% 50%);
+    transition: 0.5s;
+    transform-origin: top;
+}
+
+.letter {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    background: #fff8e7;
+    top: 5%;
+    left: 5%;
+    border-radius: 10px;
+    padding: 20px;
+    transform: translateY(100%);
+    transition: 0.5s;
+    overflow-y: auto;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.2);
+}
+
+.letter::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    background: radial-gradient(circle at corners, rgba(0,0,0,0.4), transparent 60%);
+}
+
+#texto {
+    font-family: 'Dancing Script', cursive;
+    font-size: 20px;
+    white-space: pre-line;
+}
+
+h2 {
+    font-family: 'Dancing Script', cursive;
+}
+
+#map {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    margin-top: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.envelope.open .flap {
+    transform: rotateX(180deg);
+}
+.envelope.open .letter {
+    transform: translateY(0);
+}
+
+.big-heart {
+    position: absolute;
+    bottom: 20px;
+    font-size: 40px;
+    opacity: 0;
+}
+.beat {
+    animation: beat 1s infinite;
+    opacity: 1;
+}
+@keyframes beat {
+    50% { transform: scale(1.3); }
+}
+
+.rain-heart {
+    position: fixed;
+    top: -10px;
+    font-size: 20px;
+    animation: fall linear;
+}
+@keyframes fall {
+    to {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+.btn {
+    padding: 8px;
+    margin: 5px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+.yes { background: #ff4d6d; color:white; }
+.no { background: gray; color:white; position:absolute; }
+
+.final-screen {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg,#ff758c,#ff7eb3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: 1s;
+}
+.final-screen.show { opacity: 1; }
+
+.final-love {
+    position: fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%) scale(0);
+    font-size:50px;
+    color:white;
+    opacity:0;
+}
+.show-love {
+    animation: boom 1s forwards;
+}
+@keyframes boom {
+    60% { transform:translate(-50%,-50%) scale(1.2); opacity:1; }
+    100% { transform:translate(-50%,-50%) scale(1); opacity:1; }
+}
+
+.music-btn{
+    position: fixed;
+    top:10px;
+    right:10px;
+    background:#ff4d6d;
+    color:white;
+    border:none;
+    padding:10px;
+    border-radius:50%;
+    cursor:pointer;
+}
+
+.glow {
+    position: fixed;
+    inset:0;
+    background: radial-gradient(circle, rgba(255,255,255,0.2), transparent);
+}
+</style>
+</head>
+
+<body>
+
+<div class="glow"></div>
+
+<button class="music-btn" onclick="toggleMusic()">🎵</button>
+
+<div class="envelope" onclick="openLetter()">
+<div class="flap"></div>
+
+<div class="letter">
+<h2>Para Leo ❤️</h2>
+<p id="texto"></p>
+
+<h3 style="font-family:'Dancing Script';">Nuestro lugar 💖</h3>
+<div id="map"></div>
+
+<p>¿Me amas? 💖</p>
+<button class="btn yes" onclick="respuestaSi(event)">Sí 💕</button>
+<button class="btn no" id="noBtn">No 😅</button>
+
+</div>
+</div>
+
+<div id="bigHeart" class="big-heart">❤️</div>
+
+<div id="finalScreen" class="final-screen">
+<h1>Leo ❤️</h1>
+<p style="color:white;">
+Desde que llegaste todo es más bonito...
+¿Serías mío oficialmente? 💍
+</p>
+<button onclick="aceptarPropuesta()">Sí, quiero 💖</button>
+</div>
+
+<div id="finalLove" class="final-love">
+ACEPTÓ 💍❤️
+</div>
+
+<audio id="music" src="https://www.bensound.com/bensound-music/bensound-romantic.mp3"></audio>
+<audio id="finalMusic" src="https://www.bensound.com/bensound-music/bensound-love.mp3"></audio>
+
+<script>
+let mensaje = `Leo,
+
+Quién diría que todo empezaría por una historia contestada al azar…
+
+mi corazón de melón 🍉❤️
+
+Te quiero muchísimo.
+
+Con cariño,
+Abigail`;
+
+let i=0;
+let musicOn=false;
+
+function escribirTexto(){
+if(i<mensaje.length){
+document.getElementById("texto").innerHTML+=mensaje[i];
+i++;
+setTimeout(escribirTexto,40);
+}
+}
+
+function openLetter(){
+document.querySelector(".envelope").classList.toggle("open");
+if(i===0){
+escribirTexto();
+document.getElementById("bigHeart").classList.add("beat");
+}
+}
+
+setInterval(()=>{
+let h=document.createElement("div");
+h.className="rain-heart";
+h.innerHTML="❤️";
+h.style.left=Math.random()*100+"vw";
+h.style.animationDuration=(Math.random()*3+2)+"s";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),5000);
+},300);
+
+function respuestaSi(e){
+e.stopPropagation();
+document.getElementById("music").play();
+
+setTimeout(()=>{
+document.getElementById("finalScreen").classList.add("show");
+},800);
+}
+
+function aceptarPropuesta(){
+document.getElementById("finalLove").classList.add("show-love");
+document.getElementById("finalMusic").play();
+}
+
+let noBtn=document.getElementById("noBtn");
+noBtn.addEventListener("mouseover",()=>{
+noBtn.style.left=Math.random()*200+"px";
+noBtn.style.top=Math.random()*200+"px";
+});
+
+function toggleMusic(){
+let m=document.getElementById("music");
+if(musicOn){
+m.pause();
+}else{
+m.play();
+}
+musicOn=!musicOn;
+}
+
+// MAPA CON HISTORIA
+function initMap() {
+    const indiosVerdes = { lat: 19.495, lng: -99.119 };
+
+    const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 15,
+        center: indiosVerdes,
+    });
+
+    const marker = new google.maps.Marker({
+        position: indiosVerdes,
+        map: map,
+        label: "❤️",
+    });
+
+    const mensajes = [
+        "Aquí empezó todo… ❤️",
+        "Donde todo cambió… ✨",
+        "Y aquí sigue… contigo 💖"
+    ];
+
+    let index = 0;
+
+    const info = new google.maps.InfoWindow({
+        content: `<div style='font-family:Dancing Script; font-size:18px;'>${mensajes[index]}</div>`
+    });
+
+    info.open(map, marker);
+
+    setInterval(() => {
+        index = (index + 1) % mensajes.length;
+        info.setContent(`<div style='font-family:Dancing Script; font-size:18px;'>${mensajes[index]}</div>`);
+        info.open(map, marker);
+    }, 3000);
+
+    marker.addListener("click", () => {
+        info.open(map, marker);
+    });
+}
+</script>
+
+<script async
+src="https://maps.googleapis.com/maps/api/js?key= AIzaSyB1BufCikIqIzpKbQZHr-jMyltDKSFMSAk&callback=initMap">
+</script>
+
+</body>
+</html>>
